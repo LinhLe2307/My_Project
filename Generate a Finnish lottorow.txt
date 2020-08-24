@@ -1,0 +1,47 @@
+# try to use an array here
+
+import numpy as np
+from numpy import random
+
+dataset1 = np.array([23,7,13,9,9,6,17])
+dataset2 = random.randint(1,40,7)
+print("Latest result:",dataset2)
+
+result= []
+number_unmatched = []
+for i,j in zip(dataset1, dataset2):
+    if i == j:
+        result.append(i==j)
+    else:
+        number_unmatched.append(i)    
+
+number_matched = []
+for x in result:
+    if x == True:
+        number_matched.append(x)
+print("You have",len(number_matched),"number(s) matched")
+
+bonus_ball = random.randint(1,40)
+print("Bonus ball:",bonus_ball)
+
+if len(number_matched) == 3:
+    for i in number_unmatched:
+        if i == bonus_ball:
+            print("Average price: 2€")
+        else:
+            print("You miss this time")
+            break
+elif len(number_matched) == 4:
+    print("Average price: 10€")
+elif len(number_matched) == 5:
+    print("Average price:50€")
+elif len(number_matched) == 6:
+    for i in number_unmatched:
+        if i == bonus_ball:
+            print("Average price: 50,000€")
+        else:
+            print("Average price: 2,000€")
+elif len(number_matched) == 7:
+    print("JACKPOT!!!")
+else:
+    print("You miss this time")
