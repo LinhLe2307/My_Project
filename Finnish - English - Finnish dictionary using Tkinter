@@ -1,0 +1,59 @@
+from tkinter import *
+import numpy as np
+
+mac = Tk()
+frame = LabelFrame(mac,text="Finnish - English - Finnish", padx = 100, pady=50)
+frame.pack(padx= 10, pady=10)
+
+dictionary = np.array([['ystävä', 'friend'], ['aikuinen', 'adult']  , ['viikko', 'week']     , ['vuosi', 'year'] , ['sekunti', 'second'],
+                       ['tunti', 'hour']   , ['minuutti', 'minute'] , ['kahvi', 'coffee']    , ['vesi', 'water'] , ['olut', 'beer'],
+                       ['jää', 'ice']      , ['tee', 'tea']         , ['äiti', 'mother']     , ['isä', 'father'] , ['aviomies', 'husband'],
+                       ['vaimo', 'wife']   , ['poika', 'son']       , [ 'tytär', 'daughter'] , ['kala', 'fish']  , [ 'naudanliha', 'beef'],
+                       [ 'porsas', 'pork'] , [ 'kana', 'chicken']   , [ 'keittiö', 'kitchen'], [ 'kylpyhuone', 'bathroom'], [ 'tietokone', 'computer'],
+                       [ 'sänky', 'bed']   , [ 'sohva', 'sofa']     , [ 'viikko', 'week']    , [ 'viikko', 'week'],[ 'viikko', 'week'],
+                       [ 'hoitaja', 'nurse'],[ 'hotelli', 'hotel']  , [ 'nainen', 'woman']   , [ 'mies', 'man']  , [ 'tyttöystävä', 'girlfriend'],
+                       [ 'poikaystävä', 'boyfriend'], [ 'lapsi', 'child'] , [ 'lääkäri', 'doctor'] , [ 'opettaja', 'teacher'] , [ 'tänään', 'today'],
+                       [ 'huominen', 'tomorrow'],[ 'eilen', 'yesterday'], ['pää', 'head']    , [ 'sade', 'rain'] , [ 'lumi', 'snow'],
+                       [ 'pilvi', 'cloud'] , [ 'kenkä', 'shoe']     , [ 'paita', 'paita']    , [ 'sukka', 'sock'], [ 'housut', 'pants']])
+
+finnish_label = Label(frame, text='Finnish')
+finnish_label.grid(row=0, column=0)
+
+finnish_entry = Entry(frame, width=50)
+finnish_entry.grid(row=1, column=0)
+
+def Finnish_to_English():
+    text = finnish_entry.get()
+    pos = np.where(dictionary[:,0] == text)
+    if (len(pos[0]) != 0):
+        result = Label(frame, text=dictionary[pos[0][0],1])
+        result.grid(row=3, column=0)
+    else:
+        messagebox.showerror("TRY AGAIN!!!", "Cannot find word")
+        
+    
+    
+finnish_button = Button(frame, text='Translate', command=Finnish_to_English)
+finnish_button.grid(row=2, column=0)
+
+
+english_label = Label(frame, text='English')
+english_label.grid(row=0, column=1)
+
+english_entry = Entry(frame, width=50)
+english_entry.grid(row=1, column=1)
+
+def English_to_Finnish():
+    text = english_entry.get()
+    pos = np.where(dictionary[:,1] == text)
+    if (len(pos[0]) != 0):
+        result = Label(frame, text=dictionary[pos[0][0],0])
+        result.grid(row=3, column=1)
+    else:
+        messagebox.showerror("TRY AGAIN!!!", "Cannot find word")
+
+
+english_button = Button(frame, text='Translate', command=English_to_Finnish)
+english_button.grid(row=2, column=1)
+
+mac.mainloop()
