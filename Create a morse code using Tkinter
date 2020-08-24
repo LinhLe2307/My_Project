@@ -1,0 +1,67 @@
+from tkinter import *
+mac = Tk()
+mac.title("Create a morse coder")
+
+frame = LabelFrame(mac, text="Translate a Message", padx = 50, pady=50)
+frame.pack(padx= 10, pady=10)
+
+text_encoding = Label(frame, text="Encoding Message")
+text_encoding.grid(row=0, column=0)
+
+text_decoding = Label(frame, text="Decoding Message")
+text_decoding.grid(row=0, column=1)
+
+entry_encoding = Entry(frame, width=40)
+entry_encoding.grid(row=1, column=0)
+
+entry_decoding = Entry(frame, width=40)
+entry_decoding.grid(row=1, column=1)
+
+MorseCode = { 'A':'.-', 'B':'-...',  
+        'C':'-.-.', 'D':'-..', 'E':'.',  
+        'F':'..-.', 'G':'--.', 'H':'....',  
+        'I':'..', 'J':'.---', 'K':'-.-',  
+        'L':'.-..', 'M':'--', 'N':'-.',  
+        'O':'---', 'P':'.--.', 'Q':'--.-',  
+        'R':'.-.', 'S':'...', 'T':'-',  
+        'U':'..-', 'V':'...-', 'W':'.--',  
+        'X':'-..-', 'Y':'-.--', 'Z':'--..',  
+        '1':'.----', '2':'..---', '3':'...--',  
+        '4':'....-', '5':'.....', '6':'-....',  
+        '7':'--...', '8':'---..', '9':'----.',  
+        '0':'-----', ', ':'--..--', '.':'.-.-.-',  
+        '?':'..--..', '/':'-..-.', '-':'-....-',  
+        '(':'-.--.', ')':'-.--.-', ' ': '/'}  
+
+
+def Entry_Encoding():
+    plain_text = entry_encoding.get()
+    encoding = plain_text.upper()
+    encoded_text = ''
+    for letter in encoding:
+        if letter in MorseCode:
+            encoded_text += MorseCode[letter] + ' '
+    result_label = Label(frame, text="Encoded Text: " + encoded_text)
+    result_label.grid(row=2, column=0)
+
+def Entry_Decoding():
+    encoded_text = entry_decoding.get()
+    decoding = encoded_text.split('/')
+    plain_text = ''
+    for word in decoding:
+        if (word != ''):
+            decoded = word.split(' ')
+            for char in decoded:
+                if (char != ''):
+                    plain_text += list(MorseCode.keys())[list(MorseCode.values()).index(char)]
+            plain_text += ' '
+    result_label = Label(frame, text="Decoded Text: " + plain_text)
+    result_label.grid(row=2, column=1)
+    
+encode_button = Button(frame,text="Encoding", command=Entry_Encoding)
+decode_button = Button(frame,text="Decoding", command=Entry_Decoding)
+
+encode_button.grid(row=3, column=0)
+decode_button.grid(row=3, column=1)
+
+mac.mainloop()
