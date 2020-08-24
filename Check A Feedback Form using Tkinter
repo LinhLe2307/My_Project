@@ -1,0 +1,116 @@
+# Check 4 different fields of a feedback form before it can be submitted
+# E.g user has to give age, telephone number, homepage url, email 
+# and/or other information and those values are checked (contents cannot be empty, either).
+
+from tkinter import *
+from tkinter import messagebox
+
+class FeedbackForm:
+    def __init__(self, mac):
+        self.mac = mac
+        self.mac.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
+        # Frame define
+        self.frame = LabelFrame(self.mac,text="Feedback Form", padx = 100, pady=50)
+        self.frame.pack(padx= 10, pady=10)
+        
+        
+        # Label define
+        self.NameLabel  = Label(self.frame, text="Name(s): ")
+        self.AgeLabel   = Label(self.frame, text="Age: ")
+        self.PhoneLabel = Label(self.frame, text="Telephone Number: ")
+        self.EmailLabel = Label(self.frame, text="Email: ")
+        self.NameLabel.grid(row=0, column=0)
+        self.AgeLabel.grid(row=1, column=0)
+        self.PhoneLabel.grid(row=2, column=0)
+        self.EmailLabel.grid(row=3, column=0)
+
+        # Entry define
+        self.NameEntry  = Entry(self.frame, width = 40)
+        self.AgeEntry   = Entry(self.frame, width = 40)
+        self.PhoneEntry = Entry(self.frame, width = 40)
+        self.EmailEntry = Entry(self.frame, width = 40)
+        
+        self.NameEntry.grid(row= 0, column=1, columnspan=2)
+        self.AgeEntry.grid(row= 1, column=1, columnspan=2)
+        self.PhoneEntry.grid(row= 2, column=1, columnspan=2)
+        self.EmailEntry.grid(row= 3, column=1, columnspan=2)
+        
+        # Button define
+        self.ClearButton  = Button(self.frame, text="Clear All", command=self.ClearAll)
+        self.SubmitButton = Button(self.frame, text="Submit",command=self.Submit)
+
+        self.ClearButton.grid(row=6, column=2)
+        self.SubmitButton.grid(row=6, column=1)
+        
+
+    def Submit(self):
+        name = self.NameEntry.get()
+        age = self.AgeEntry.get()
+        phone = self.PhoneEntry.get()
+        mail = self.EmailEntry.get()
+        if len(name) == 0 or len(age)==0 or len(phone)==0 or len(mail)==0:
+            messagebox.showerror("TRY AGAIN!!!", "Invalid Value")
+        else:
+            self.name = None
+            if any(character.isdigit() for character in name):
+                messagebox.showerror("TRY AGAIN!!!", "Invalid Name")
+                return
+            else:
+                self.name = name
+
+            self.age = None      
+            if all(character.isdigit() for character in age) and (0 < int(age) < 100):
+                self.age = age
+            else:
+                messagebox.showerror("TRY AGAIN!!!", "Invalid Age")
+                return
+
+            self.phone = None
+            if any(character.isalpha() for character in phone) or len(phone) > 11:
+                messagebox.showerror("TRY AGAIN!!!", "Invalid Phone Number")
+                return
+            else:
+                self.phone = phone
+
+            self.mail = None
+            position = mail.find("@")
+            if len(mail)== 0:
+                messagebox.showerror("TRY AGAIN!!!", "Invalid Email")
+                return
+            else:
+                if position == -1 or position == 0 or position == len(mail) - 1:
+                    messagebox.showerror("TRY AGAIN!!!", "Invalid Email")
+                    return
+                else:
+                    if any(character.isdigit() for character in mail[position:]):
+                        messagebox.showerror("TRY AGAIN!!!", "Invalid Email")
+                        return
+                    else:
+                        self.mail = mail
+
+            messagebox.showinfo("Succeed!!!","Your information has been saved!!!")
+            with open('info.txt', 'w') as f:
+                f.write('Name   : ' + self.name + '\n')
+                f.write('Age    : ' + self.age + '\n')
+                f.write('Phone  : ' + self.phone + '\n')
+                f.write('Email  : ' + self.mail + '\n')
+        
+    def ClearAll(self):
+        self.NameEntry.delete(0, END)
+        self.AgeEntry.delete(0, END)
+        self.PhoneEntry.delete(0, END)
+        self.EmailEntry.delete(0, END)
+        self.name = None
+        self.age = None
+        self.phone = None
+        self.mail = None
+
+    def on_closing(self):
+        self.mac.destroy()
+                     
+
+mac = Tk()
+mac.title("A Feedback Form")
+form = FeedbackForm(mac)
+mac.mainloop()
